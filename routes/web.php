@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\ComprarController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ConsultarController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarteiraController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +35,29 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function(){
+Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
+
+Route::get('/consultar', [
+    ConsultarController::class,
+    'create'
+])->middleware('auth')->name('consultar');
+
+Route::post('/consultar', [
+    ConsultarController::class,
+    'consultar'
+])->middleware('auth')->name('consultar');
+
+Route::get('/comprar', [
+    ComprarController::class,
+    'create'
+])->middleware('auth')->name('comprar');
+Route::post('/comprar', [
+    ComprarController::class,
+    'comprar'
+])->middleware('auth')->name('comprar');
+
+Route::get('/carteira', [CarteiraController::class, 'index'])
+    ->middleware('auth') // protege a rota
+    ->name('carteira');
