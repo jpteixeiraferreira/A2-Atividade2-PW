@@ -39,14 +39,15 @@ document.getElementById('formCotacao').addEventListener('submit', async function
             document.getElementById('resultado').textContent = data.frase;
             document.getElementById('resultado').classList.remove('d-none', 'alert-danger');
             document.getElementById('resultado').classList.add('alert-info');
-            document.getElementById('erro').textContent = "";
         } else {
             document.getElementById('resultado').textContent = data.message;
             document.getElementById('resultado').classList.remove('d-none', 'alert-info');
             document.getElementById('resultado').classList.add('alert-danger');
         }
     } catch (err) {
-        document.getElementById('erro').textContent = "Erro inesperado, tente novamente.";
+        document.getElementById('resultado').textContent = "Erro inesperado, tente novamente.";
+        document.getElementById('resultado').classList.remove('d-none', 'alert-info');
+        document.getElementById('resultado').classList.add('alert-danger');
     }
 });
 </script>

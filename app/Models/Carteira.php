@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Carteira extends Model
 {
     use HasFactory;
+    
+    protected $table = 'carteira';
+    
     protected $fillable = [
         'user_id',
         'acao',
