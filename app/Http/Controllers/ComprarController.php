@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carteira;
 use App\Models\User;
 use App\Services\CotacaoService;
+use App\Services\HistoricoService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -12,10 +13,12 @@ use Illuminate\Http\Request;
 class ComprarController extends Controller
 {
     protected $cotacaoService;
+    protected $historicoService;
     
-    public function __construct(CotacaoService $cotacaoService)
+    public function __construct(CotacaoService $cotacaoService, HistoricoService $historicoService)
     {
         $this->cotacaoService = $cotacaoService;
+        $this->historicoService = $historicoService;
     }
 
     public function create()
@@ -40,13 +43,16 @@ class ComprarController extends Controller
 
         $user = Auth::user();
         $acao = strtoupper(trim($request->inputCode));
-        $quantidade = (int) $request->inputQtd;
+        $quantidade = (int) trim($request->inputQtd);
 
         // Iniciar transação para garantir consistência dos dados
         return DB::transaction(function () use ($user, $acao, $quantidade) {
-            try {
                 // 1. Consultar cotação na API
                 $cotacao = $this->cotacaoService->buscarCotacao($acao);
+                if($cotacao['error'] ?? false){
+                    return redirect()->back()->withErrors(['cotacao'=>$cotacao['error']]);
+                }
+
                 $precoAtual = $cotacao['preco'];
                 $nomeAcao = $cotacao['nome'];
 
@@ -70,29 +76,20 @@ class ComprarController extends Controller
                 if ($carteira) {
                     // Atualizar carteira existente
                     $quantidadeAnterior = $carteira->quantidade;
-                    $precoMedioAnterior = $carteira->preco_medio;
-                    
-                    // Calcular novo preço médio ponderado
-                    $valorTotalAnterior = $quantidadeAnterior * $precoMedioAnterior;
-                    $valorTotalNovo = $valorTotalAnterior + $valorCompra;
                     $quantidadeTotal = $quantidadeAnterior + $quantidade;
-                    $novoPrecoMedio = $valorTotalNovo / $quantidadeTotal;
-
                     $carteira->quantidade = $quantidadeTotal;
-                    $carteira->preco_medio = $novoPrecoMedio;
                 } else {
                     // Criar nova entrada na carteira
                     $carteira = new Carteira([
                         'user_id' => $user->id,
                         'acao' => $acao,
                         'quantidade' => $quantidade,
-                        'preco_medio' => $precoAtual
                     ]);
                 }
 
                 // 5. Salvar carteira
                 $carteira->save();
-
+                $this->historicoService->registrar('Compra', $user->id, $acao, $quantidade, $valorCompra);
                 // 6. Atualizar saldo do usuário
                 $user->saldo -= $valorCompra;
                 $user->save();
@@ -110,19 +107,6 @@ class ComprarController extends Controller
                     'carteira' => $carteiraData
                 ]);
 
-            } catch (\Exception $e) {
-                // Log do erro para debug
-                \Log::error('Erro na compra de ação', [
-                    'user_id' => $user->id,
-                    'acao' => $acao,
-                    'quantidade' => $quantidade,
-                    'erro' => $e->getMessage()
-                ]);
-
-                return back()->withErrors([
-                    'erro' => 'Erro ao realizar a compra: ' . $e->getMessage()
-                ]);
-            }
         });
     }
 
@@ -141,11 +125,8 @@ class ComprarController extends Controller
                 $dadosCarteira[] = [
                     'codigo' => $item->acao,
                     'quantidade' => $item->quantidade,
-                    'preco_medio' => number_format($item->preco_medio, 2, ',', '.'),
                     'preco_atual' => number_format($precoAtual, 2, ',', '.'),
                     'total' => number_format($total, 2, ',', '.'),
-                    'variacao' => $precoAtual - $item->preco_medio,
-                    'variacao_percentual' => (($precoAtual - $item->preco_medio) / $item->preco_medio) * 100
                 ];
             } catch (\Exception $e) {
                 // Se não conseguir buscar a cotação, usar preço médio
@@ -153,11 +134,8 @@ class ComprarController extends Controller
                 $dadosCarteira[] = [
                     'codigo' => $item->acao,
                     'quantidade' => $item->quantidade,
-                    'preco_medio' => number_format($item->preco_medio, 2, ',', '.'),
                     'preco_atual' => 'N/A',
                     'total' => number_format($total, 2, ',', '.'),
-                    'variacao' => 0,
-                    'variacao_percentual' => 0
                 ];
             }
         }
@@ -165,3 +143,4 @@ class ComprarController extends Controller
         return $dadosCarteira;
     }
 }
+

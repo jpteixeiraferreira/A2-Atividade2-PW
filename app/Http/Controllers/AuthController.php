@@ -25,8 +25,9 @@ class AuthController extends Controller
             'email' => $credentials['inputEmail'],
             'password'=>$credentials['inputPassword']
         ])){
+            $user = Auth::user();
             $request->session()->regenerate(); //proteção contra session fixation
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/dashboard')->with('success', $user->name);
         }
 
         return back()->withErrors([

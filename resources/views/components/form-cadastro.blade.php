@@ -12,7 +12,8 @@
     </div>
     <div class="mb-3">
         <label for="inputEmail" class="form-label">E-mail</label>
-        <input type="email" name="inputEmail" class="form-control" id="inputEmail" aria-describedby="emailHelp" value="{{old('inputEmail')}}">
+        <input type="email" name="inputEmail" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+            value="{{old('inputEmail')}}">
         @error('inputEmail')
             <div class="text-danger fs-6">
                 {{ $message }}
@@ -33,4 +34,6 @@
         <input type="password" class="form-control" name="inputPassword_confirmation" id="inputPassword_confirmation">
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
+
 </form>
+

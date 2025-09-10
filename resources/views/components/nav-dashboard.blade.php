@@ -1,7 +1,7 @@
 
    <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{route('inicio')}}">Finance App</a>
+    <a class="navbar-brand" href="{{route('dashboard')}}">Finance App</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,7 +18,7 @@
         </li>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Histórico</a>
+          <a class="nav-link" href="{{route('historico')}}">Histórico</a>
         </li>
         </li>
         <li class="nav-item">

@@ -5,7 +5,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConsultarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarteiraController;
+use App\Http\Controllers\HistoricoController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -61,3 +63,7 @@ Route::post('/comprar', [
 Route::get('/carteira', [CarteiraController::class, 'index'])
     ->middleware('auth') // protege a rota
     ->name('carteira');
+
+Route::get('/historico', [HistoricoController::class, 'index'])
+    ->middleware('auth')
+    ->name('historico');

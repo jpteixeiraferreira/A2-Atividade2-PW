@@ -7,10 +7,8 @@
                     <tr>
                         <th>Código</th>
                         <th>Quantidade</th>
-                        <th>Preço Médio (R$)</th>
                         <th>Preço Atual (R$)</th>
                         <th>Total (R$)</th>
-                        <th>Variação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,7 +16,6 @@
                         <tr>
                             <td><strong>{{ $acao['codigo'] }}</strong></td>
                             <td>{{ $acao['quantidade'] }}</td>
-                            <td>R$ {{ $acao['preco_medio'] }}</td>
                             <td>
                                 @if($acao['preco_atual'] !== 'N/A')
                                     R$ {{ $acao['preco_atual'] }}
@@ -27,26 +24,16 @@
                                 @endif
                             </td>
                             <td><strong>R$ {{ $acao['total'] }}</strong></td>
-                            <td>
-                                @if($acao['preco_atual'] !== 'N/A')
-                                    @if($acao['variacao'] >= 0)
-                                        <span class="text-success">
-                                            +R$ {{ number_format($acao['variacao'], 2, ',', '.') }}
-                                            ({{ number_format($acao['variacao_percentual'], 2, ',', '.') }}%)
-                                        </span>
-                                    @else
-                                        <span class="text-danger">
-                                            R$ {{ number_format($acao['variacao'], 2, ',', '.') }}
-                                            ({{ number_format($acao['variacao_percentual'], 2, ',', '.') }}%)
-                                        </span>
-                                    @endif
-                                @else
-                                    <span class="text-muted">N/A</span>
-                                @endif
-                            </td>
                         </tr>
                     @endforeach
+                    <tfoot class="table-dark">
+                        <tr>
+                            <td colspan="3">Saldo restante:</td>
+                            <td>{{Auth::user()->saldo}}</td>
+                        </tr>
+                    </tfoot>
                 </tbody>
+
             </table>
         </div>
     </div>

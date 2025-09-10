@@ -29,6 +29,6 @@ class UserController extends Controller
             'password' => Hash::make($validated['inputPassword'],)
         ]);
 
-        return redirect()->back()->with('success', 'Cadastro realizado com sucesso!');
+        return redirect('/dashboard')->with('success', 'Cadastro realizado com sucesso!');
     }
 }
