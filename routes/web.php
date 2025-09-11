@@ -6,6 +6,7 @@ use App\Http\Controllers\ConsultarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarteiraController;
 use App\Http\Controllers\HistoricoController;
+use App\Http\Controllers\VenderController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -67,3 +68,12 @@ Route::get('/carteira', [CarteiraController::class, 'index'])
 Route::get('/historico', [HistoricoController::class, 'index'])
     ->middleware('auth')
     ->name('historico');
+
+Route::get('/vender', [VenderController::class, 'index'])
+    ->middleware('auth')
+    ->name('vender');
+
+    
+Route::post('/vender', [VenderController::class, 'vender'])
+    ->middleware('auth')
+    ->name('vender');

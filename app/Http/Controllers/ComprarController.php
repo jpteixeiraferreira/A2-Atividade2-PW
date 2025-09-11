@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Carteira;
 use App\Models\User;
+use App\Services\CarteiraService;
 use App\Services\CotacaoService;
 use App\Services\HistoricoService;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,16 @@ class ComprarController extends Controller
 {
     protected $cotacaoService;
     protected $historicoService;
+    protected $carteiraService;
     
-    public function __construct(CotacaoService $cotacaoService, HistoricoService $historicoService)
+    public function __construct(
+        CotacaoService $cotacaoService,
+        HistoricoService $historicoService,
+        CarteiraService $carteiraService)
     {
         $this->cotacaoService = $cotacaoService;
         $this->historicoService = $historicoService;
+        $this->carteiraService = $carteiraService;
     }
 
     public function create()
@@ -95,7 +101,7 @@ class ComprarController extends Controller
                 $user->save();
 
                 // 7. Buscar dados atualizados da carteira
-                $carteiraData = $this->buscarDadosCarteira($user->id);
+                $carteiraData = $this->carteiraService->buscarDadosCarteira($user->id);
 
                 // 8. Retornar sucesso com dados da carteira
                 return back()->with([
@@ -108,39 +114,6 @@ class ComprarController extends Controller
                 ]);
 
         });
-    }
-
-    private function buscarDadosCarteira($userId)
-    {
-        $carteira = Carteira::where('user_id', $userId)->get();
-        $dadosCarteira = [];
-
-        foreach ($carteira as $item) {
-            try {
-                // Buscar cotação atual da ação
-                $cotacao = $this->cotacaoService->buscarCotacao($item->acao);
-                $precoAtual = $cotacao['preco'];
-                $total = $precoAtual * $item->quantidade;
-
-                $dadosCarteira[] = [
-                    'codigo' => $item->acao,
-                    'quantidade' => $item->quantidade,
-                    'preco_atual' => number_format($precoAtual, 2, ',', '.'),
-                    'total' => number_format($total, 2, ',', '.'),
-                ];
-            } catch (\Exception $e) {
-                // Se não conseguir buscar a cotação, usar preço médio
-                $total = $item->preco_medio * $item->quantidade;
-                $dadosCarteira[] = [
-                    'codigo' => $item->acao,
-                    'quantidade' => $item->quantidade,
-                    'preco_atual' => 'N/A',
-                    'total' => number_format($total, 2, ',', '.'),
-                ];
-            }
-        }
-
-        return $dadosCarteira;
     }
 }
 

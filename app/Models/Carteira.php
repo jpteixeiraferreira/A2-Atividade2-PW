@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Carteira extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'carteira';
-    
+
     protected $fillable = [
         'user_id',
         'acao',
         'quantidade',
-        'preco_medio'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-}   
+}

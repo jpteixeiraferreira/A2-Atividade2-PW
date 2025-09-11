@@ -41,7 +41,9 @@
     <div class="mt-4">
         <h4>Minha Carteira</h4>
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> Você ainda não possui ações na carteira.
+            <i class="fas fa-info-circle"></i> Você não possui ações na carteira.
         </div>
     </div>
 @endif
+
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -23,12 +24,13 @@ class UserController extends Controller
 
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['inputName'],
             'email' => $validated['inputEmail'],
             'password' => Hash::make($validated['inputPassword'],)
         ]);
 
+        Auth::login($user);
         return redirect('/dashboard')->with('success', 'Cadastro realizado com sucesso!');
     }
 }

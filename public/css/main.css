@@ -9,3 +9,15 @@ footer{
 .welcome {
     margin-top: 2rem;
 }
+
+.btn{
+    width: 300px;
+}
+/* .btnVender{
+    width: 5rem;
+    border-radius: 15px;
+}
+
+.btnComprar{
+    width: 6rem;
+} */

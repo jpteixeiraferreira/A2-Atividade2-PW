@@ -14,17 +14,16 @@
           <a class="nav-link" href="{{route('comprar')}}">Comprar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Vender</a>
-        </li>
+          <a class="nav-link" href="{{route('vender')}}">Vender</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{route('historico')}}">Histórico</a>
-        </li>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{route('logout')}}">Logout</a>
         </li>
       </ul>
+          <span class="nav-link ms-auto fw-bold">Saldo atual: R$ {{Auth::user()->saldo}} </span>
     </div>
   </div>
 </nav>
