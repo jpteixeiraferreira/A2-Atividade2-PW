@@ -15,7 +15,7 @@
                     @forelse($historico as $hist)
                         <tr>
                             <td><strong>{{ $hist->acao }}</strong></td>
-                            <td>{{ $hist->quantidade }}</td>
+                            <td>{{$hist->tipo === 'Compra' ? '+' : '-' }}{{$hist->quantidade }}</td>
                             <td>R$ {{ number_format($hist->preco_unitario, 2, ',', '.') }}</td>
                             <td>{{ \Carbon\Carbon::parse($hist->data_operacao)
                                     ->timezone('America/Sao_Paulo')

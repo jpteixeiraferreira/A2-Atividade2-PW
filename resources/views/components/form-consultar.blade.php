@@ -5,11 +5,6 @@
     <div class="mb-3">
         <label for="inputCode" class="form-label">Código da ação (ex: BBAS3)</label>
         <input type="text" name="inputCode" class="form-control w-50" id="inputCode" value="{{old('inputCode')}}">
-        @error('inputCode')
-            <div class="text-danger fs-6">
-                {{ $message }}
-            </div>
-        @enderror
     </div>
     <button type="submit" class="btn btn-primary">Consultar</button>
 </form>
@@ -34,13 +29,12 @@ document.getElementById('formCotacao').addEventListener('submit', async function
         });
 
         let data = await response.json();
-
         if (data.success) {
             document.getElementById('resultado').textContent = data.frase;
             document.getElementById('resultado').classList.remove('d-none', 'alert-danger');
             document.getElementById('resultado').classList.add('alert-info');
         } else {
-            document.getElementById('resultado').textContent = data.message;
+            document.getElementById('resultado').textContent = 'Insira um código válido.';
             document.getElementById('resultado').classList.remove('d-none', 'alert-info');
             document.getElementById('resultado').classList.add('alert-danger');
         }

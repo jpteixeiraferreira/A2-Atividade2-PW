@@ -22,5 +22,3 @@
     </div>
     <button type="submit" class="btn btn-primary btnComprar">Comprar</button>
 </form>
-
-<div id="resultado" class="alert alert-info mt-3 d-none"></div>

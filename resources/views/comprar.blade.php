@@ -7,13 +7,13 @@
                 <h2>Comprar Ações</h2>
                 <x-form-comprar/>
                 @if (session('success'))
-                    <div class="text-success">
+                    <div class="alert alert-info mt-3">
                         {{ session('success') }}
                     </div>
                 @endif
 
                 @if ($errors->has('cotacao'))
-                        <div class="text-danger">
+                        <div class="alert alert-danger mt-3">
                         {{ $errors->first('cotacao') }}
                     </div>
                 @endif
