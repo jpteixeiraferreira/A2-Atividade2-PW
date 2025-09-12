@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function showLoginForm(){
+    public function index(){
         return view('logar');
     }
 

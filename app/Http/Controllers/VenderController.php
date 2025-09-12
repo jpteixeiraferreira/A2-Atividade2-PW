@@ -44,7 +44,7 @@ class VenderController extends Controller
             'acao.exists'=>'Código da ação deve existir na carteira.',
             'qtd.required' => 'Uma quantidade deve ser inserida',
             'qtd.integer' => 'Quantidade deve ser um número inteiro',
-            'qtd.min' => "A quantidade mínima é 1.",
+            'qtd.min' => "A quantidade mínima é 1",
         ]);
         return DB::transaction(function () use ($request, $validated) {
             $user = Auth::user();
@@ -59,7 +59,7 @@ class VenderController extends Controller
             }
 
             if ($qtdCarteira < $request->qtd) {
-                return redirect()->back()->with('error', 'Quantidade informada maior que a possuída em carteira.');
+                return redirect()->back()->with('error', 'Quantidade informada maior que a possuída em carteira');
             }
 
             $precoAtual = $this->cotacaoService->buscarCotacao($request->acao)['preco'];

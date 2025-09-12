@@ -7,8 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-class UserController extends Controller
+class CadastrarController extends Controller
 {
+    public function index()
+    {
+        return view('cadastrar');
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -20,7 +25,7 @@ class UserController extends Controller
             'inputEmail.required' => 'Campo e-mail de preenchimento obrigatório',
             'inputEmail.unique' => 'Já existe um cadastro associado a este e-mail',
             'inputPassword.required' => 'Campo senha de preenchimento obrigatório',
-            'inputPassword.confirmed'=>'Senhas devem ser iguais',
+            'inputPassword.confirmed' => 'Senhas devem ser iguais',
 
         ]);
 

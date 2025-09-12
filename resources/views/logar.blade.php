@@ -3,7 +3,7 @@
     <x-form-geral>
 
         @if (session('logout'))
-            <div class="text-danger fs-6">
+            <div class="alert alert-danger mt-3">
                 {{session('logout')}}
             </div>
         @endif

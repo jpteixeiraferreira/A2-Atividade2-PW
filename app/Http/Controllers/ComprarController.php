@@ -27,7 +27,7 @@ class ComprarController extends Controller
         $this->carteiraService = $carteiraService;
     }
 
-    public function create()
+    public function index()
     {
         return view('comprar');
     }

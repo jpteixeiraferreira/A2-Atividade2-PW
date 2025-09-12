@@ -1,5 +1,6 @@
 <x-layout title="Historico">
-    <x-nav-dashboard/>
+    <x-nav-dashboard />
+    <div class="container">
         <h4>Histórico</h4>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
@@ -13,23 +14,25 @@
                 </thead>
                 <tbody>
                     @forelse($historico as $hist)
-                        <tr>
-                            <td><strong>{{ $hist->acao }}</strong></td>
-                            <td>{{$hist->tipo === 'Compra' ? '+' : '-' }}{{$hist->quantidade }}</td>
-                            <td>R$ {{ number_format($hist->preco_unitario, 2, ',', '.') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($hist->data_operacao)
-                                    ->timezone('America/Sao_Paulo')
-                                    ->format('d/m/Y H:i') }}
-                            </td>
+                                    <tr>
+                                        <td><strong>{{ $hist->acao }}</strong></td>
+                                        <td>{{$hist->tipo === 'Compra' ? '+' : '-' }}{{$hist->quantidade }}</td>
+                                        <td>R$ {{ number_format($hist->preco_unitario, 2, ',', '.') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($hist->data_operacao)
+                        ->timezone('America/Sao_Paulo')
+                        ->format('d/m/Y H:i') }}
+                                        </td>
 
-                        </tr>
+                                    </tr>
                     @empty
                         <tr>
-                           <td colspan="4" class="text-center">Nenhuma operação encontrada</td> 
+                            <td colspan="4" class="text-center">Nenhuma operação encontrada</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+    </div>
+
     </div>
 </x-layout>

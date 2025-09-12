@@ -13,7 +13,7 @@ class ConsultarController extends Controller
     public function __construct(CotacaoService $cotacaoService){
         $this->cotacaoService = $cotacaoService;
     }
-    public function create(){
+    public function index(){
         return view('consultar');
     }
 
